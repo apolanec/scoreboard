@@ -89,11 +89,12 @@ public class ScoreboardTest
         {
             System.out.println(m);
         }
-        assertEquals(matchId3, summary.get(0));//match3 must be first (highest score)
-        assertEquals(matchId2, summary.get(1));//match2 must be second (highest score)
-        assertEquals(matchId1, summary.get(1));//match2 must be second (highest score)
+        assertEquals(matchId3, summary.get(0).getMatchId());//match3 must be first (highest score)
+        assertEquals(matchId2, summary.get(1).getMatchId());//match2 must be second (highest score)
+        assertEquals(matchId1, summary.get(2).getMatchId());//match2 must be second (highest score)
         api.finishMatch(matchId1);
-        assertEquals(0,summary.size());
+        summary = api.getSummary();
+        assertEquals(2,summary.size());
     }
 
 }

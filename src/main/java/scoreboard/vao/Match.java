@@ -3,11 +3,12 @@ package scoreboard.vao;
 public class Match implements Comparable<Match>
 {
     private final Long startTimestamp;
+    private final Long nanoStartTime;
     private final String matchId;
     private final String homeTeam;
     private final String awayTeam;
-    private Integer homeScore;
-    private Integer awayScore;
+    private int homeScore;
+    private int awayScore;
 
     public Match(String matchId, String homeTeam, String awayTeam)
     {
@@ -16,6 +17,7 @@ public class Match implements Comparable<Match>
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.startTimestamp = System.currentTimeMillis();
+        this.nanoStartTime=System.nanoTime();
         this.homeScore = 0;
         this.awayScore = 0;
     }
@@ -65,6 +67,11 @@ public class Match implements Comparable<Match>
         return homeScore + awayScore;
     }
 
+    public Long getNanoStartTime()
+    {
+        return nanoStartTime;
+    }
+
     @Override
     public int compareTo(Match o)
     {
@@ -75,7 +82,12 @@ public class Match implements Comparable<Match>
         int i =-1* getTotalScore().compareTo(o.getTotalScore());
         if (i == 0)
         {
-            return startTimestamp.compareTo(o.getStartTimestamp());
+            int compareTo = startTimestamp.compareTo(o.getStartTimestamp());
+            if(compareTo==0) 
+            {
+                return -1*nanoStartTime.compareTo(o.getNanoStartTime());
+            }
+            return compareTo;
         }
         else
         {
@@ -86,7 +98,7 @@ public class Match implements Comparable<Match>
     @Override
     public String toString()
     {
-        return "Match [startTimestamp=" + startTimestamp + ", homeTeam=" + homeTeam + ", awayTeam=" + awayTeam + ", homeScore=" + homeScore + ", awayScore=" + awayScore + "]";
+        return "Match [startTimestamp=" + startTimestamp + ", nanoStartTime=" + nanoStartTime + ", matchId=" + matchId + ", homeTeam=" + homeTeam + ", awayTeam=" + awayTeam + ", homeScore=" + homeScore + ", awayScore=" + awayScore + "]";
     }
 
 }
