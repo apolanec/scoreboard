@@ -34,7 +34,7 @@ public class ScoreboardTest
         }
         catch (RuntimeException e)
         {
-            assertEquals(Constants.GAME_EXISTS, e.getMessage());
+            assertEquals(Constants.TEAM_ALLREADY_ACTIVE_IN_ANOTHER_MATCH, e.getMessage());
         }
         try
         {
@@ -42,7 +42,7 @@ public class ScoreboardTest
         }
         catch (RuntimeException e)
         {
-            assertEquals(Constants.GAME_EXISTS, e.getMessage());
+            assertEquals(Constants.TEAM_ALLREADY_ACTIVE_IN_ANOTHER_MATCH, e.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ public class ScoreboardTest
         assertEquals(null, api.updateScore(1, 0, matchId));
         assertEquals(null, api.updateScore(1, 1, matchId));
         assertEquals(null, api.updateScore(1, 0, matchId));
-        assertEquals(Constants.GAME_NOT_EXISTS, UUID.randomUUID());
+        assertEquals(Constants.MATCH_NOT_EXISTS, UUID.randomUUID());
         assertEquals(Constants.NEGATIVE_SCORE, api.updateScore(-1, 0, matchId));
         assertEquals(Constants.NEGATIVE_SCORE, api.updateScore(0, -1, matchId));
         assertEquals(Constants.NEGATIVE_SCORE, api.updateScore(-1, -1, matchId));
@@ -66,7 +66,7 @@ public class ScoreboardTest
         ScoreBoardAPI api = new Scoreboard();
         String matchId = api.startNewMatch(TEAM_ONE, TEAM_TWO);
         assertEquals(null,api.finishMatch(matchId));
-        assertEquals(Constants.GAME_NOT_EXISTS,UUID.randomUUID());
+        assertEquals(Constants.MATCH_NOT_EXISTS,UUID.randomUUID().toString());
     }
     
     @Test
