@@ -72,10 +72,10 @@ public class Match implements Comparable<Match>
         {
             return 1;
         }
-        int i = startTimestamp.compareTo(o.getStartTimestamp());
+        int i = getTotalScore().compareTo(o.getTotalScore());
         if (i == 0)
         {
-            return getTotalScore().compareTo(o.getTotalScore());
+            return startTimestamp.compareTo(o.getStartTimestamp());
         }
         else
         {

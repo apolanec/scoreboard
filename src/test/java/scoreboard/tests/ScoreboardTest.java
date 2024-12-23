@@ -16,6 +16,10 @@ public class ScoreboardTest
 {
     public static final String TEAM_ONE = "1";
     public static final String TEAM_TWO = "2";
+    public static final String TEAM_THREE = "3";
+    public static final String TEAM_FOUR = "4";
+    public static final String TEAM_FIVE = "5";
+    public static final String TEAM_SIX = "6";
 
     @Test
     public void testStartNewMatch()
@@ -65,21 +69,27 @@ public class ScoreboardTest
     {
         ScoreBoardAPI api = new Scoreboard();
         String matchId = api.startNewMatch(TEAM_ONE, TEAM_TWO);
-        assertEquals(null,api.finishMatch(matchId));
-        assertEquals(Constants.MATCH_NOT_EXISTS,UUID.randomUUID().toString());
+        assertEquals(null, api.finishMatch(matchId));
+        assertEquals(Constants.MATCH_NOT_EXISTS, UUID.randomUUID().toString());
     }
-    
+
     @Test
     public void testGetSummary() 
     {
         ScoreBoardAPI api = new Scoreboard();
         List<Match> summary = api.getSummary();
         assertEquals(0,summary.size());
-        String matchId = api.startNewMatch(TEAM_ONE, TEAM_TWO);
-        assertEquals(1, summary.size());
-        api.finishMatch(matchId);
+        String matchId1 = api.startNewMatch(TEAM_ONE, TEAM_TWO);
+        String matchId2=api.startNewMatch(TEAM_THREE, TEAM_FOUR);
+        String matchId3=api.startNewMatch(TEAM_FIVE, TEAM_SIX);
+        api.updateScore(1, 1, matchId3);
+        summary = api.getSummary();
+        assertEquals(3, summary.size());
+        assertEquals(matchId3, summary.get(0));//match3 must be first (highest score)
+        assertEquals(matchId2, summary.get(1));//match2 must be second (highest score)
+        assertEquals(matchId1, summary.get(1));//match2 must be second (highest score)
+        api.finishMatch(matchId1);
         assertEquals(0,summary.size());
     }
-    
-    
+
 }
