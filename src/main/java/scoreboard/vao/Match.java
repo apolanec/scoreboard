@@ -72,7 +72,7 @@ public class Match implements Comparable<Match>
         {
             return 1;
         }
-        int i = getTotalScore().compareTo(o.getTotalScore());
+        int i =-1* getTotalScore().compareTo(o.getTotalScore());
         if (i == 0)
         {
             return startTimestamp.compareTo(o.getStartTimestamp());
@@ -81,6 +81,12 @@ public class Match implements Comparable<Match>
         {
             return i;
         }
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Match [startTimestamp=" + startTimestamp + ", homeTeam=" + homeTeam + ", awayTeam=" + awayTeam + ", homeScore=" + homeScore + ", awayScore=" + awayScore + "]";
     }
 
 }

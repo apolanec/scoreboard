@@ -13,25 +13,25 @@ import scoreboard.vao.Match;
 
 public final class Scoreboard implements ScoreBoardAPI
 {
-    private Map<String,Match> matches=new HashMap<>();
-    
+    private Map<String, Match> matches = new HashMap<>();
+
     @Override
     public synchronized String startNewMatch(String homeTeam, String awayTeam)
     {
-        for(Entry<String, Match>e:matches.entrySet()) 
+        for (Entry<String, Match> e : matches.entrySet())
         {
-            Match tmp=e.getValue();
-            if(tmp.getAwayTeam().equals(homeTeam) || tmp.getAwayTeam().equals(awayTeam)) 
+            Match tmp = e.getValue();
+            if (tmp.getAwayTeam().equals(homeTeam) || tmp.getAwayTeam().equals(awayTeam))
             {
                 return Constants.TEAM_ALLREADY_ACTIVE_IN_ANOTHER_MATCH;
             }
-            if(tmp.getHomeTeam().equals(homeTeam) || tmp.getHomeTeam().equals(awayTeam)) 
+            if (tmp.getHomeTeam().equals(homeTeam) || tmp.getHomeTeam().equals(awayTeam))
             {
                 return Constants.TEAM_ALLREADY_ACTIVE_IN_ANOTHER_MATCH;
             }
         }
-        String newMatchId=UUID.randomUUID().toString();
-        Match match=new Match(newMatchId, homeTeam, awayTeam);
+        String newMatchId = UUID.randomUUID().toString();
+        Match match = new Match(newMatchId, homeTeam, awayTeam);
         matches.put(newMatchId, match);
         return newMatchId;
     }
@@ -39,20 +39,36 @@ public final class Scoreboard implements ScoreBoardAPI
     @Override
     public synchronized String updateScore(int homeScore, int awayScore, String matchId)
     {
-        // TODO Auto-generated method stub
+        Match m = matches.get(matchId);
+        if (m == null)
+        {
+            return Constants.MATCH_NOT_EXISTS;
+        }
+        if(homeScore<0 || awayScore<0) 
+        {
+            return Constants.NEGATIVE_SCORE;
+        }
+        m.setAwayScore(awayScore);
+        m.setHomeScore(awayScore);
         return null;
     }
 
     @Override
     public synchronized String finishMatch(String matchId)
     {
+        Match m = matches.get(matchId);
+        if (m == null)
+        {
+            return Constants.MATCH_NOT_EXISTS;
+        }
+        matches.remove(matchId);
         return null;
     }
 
     @Override
     public synchronized List<Match> getSummary()
     {
-        List<Match> summary=new LinkedList<>(matches.values());
+        List<Match> summary = new LinkedList<>(matches.values());
         Collections.sort(summary);
         return summary;
     }
